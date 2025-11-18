@@ -3,7 +3,9 @@
 import React, { useEffect, useRef } from "react";
 import NoteCard from "./NoteCard";
 import { useNotesList } from "@/hooks/useNotes";
-import { classNames, debounce } from "@/lib/utils";
+import { debounce } from "@/lib/utils";
+import { Button } from "@/components/common/Button";
+import { Input } from "@/components/common/Input";
 
 /**
  * PUBLIC_INTERFACE
@@ -46,35 +48,30 @@ export default function NoteList() {
         </div>
 
         <div className="flex items-center gap-2">
-          <label htmlFor="notes-search" className="sr-only">
-            Search notes
-          </label>
-          <div className="relative">
-            <input
-              id="notes-search"
-              type="search"
-              placeholder="Search notes..."
-              defaultValue={search}
-              onChange={(e) => debouncedSet(e.target.value)}
-              className="w-56 sm:w-64 md:w-72 rounded-md border border-gray-200 bg-white px-9 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus-visible:outline-none"
-            />
-            <span
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-              aria-hidden
-            >
+          <Input
+            id="notes-search"
+            type="search"
+            placeholder="Search notes..."
+            defaultValue={search}
+            onChange={(e) => debouncedSet(e.target.value)}
+            size="md"
+            aria-label="Search notes"
+            className="w-56 sm:w-64 md:w-72"
+            leftAdornment={
               <svg
                 className="h-5 w-5"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
+                aria-hidden="true"
               >
                 <circle cx="11" cy="11" r="7" strokeWidth="2" />
                 <path d="m20 20-3.5-3.5" strokeWidth="2" />
               </svg>
-            </span>
-          </div>
+            }
+          />
 
-          <button
+          <Button
             type="button"
             onClick={() =>
               createOptimistic({
@@ -83,13 +80,11 @@ export default function NoteList() {
                 favorite: false,
               })
             }
-            className={classNames(
-              "rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white shadow-sm",
-              "hover:bg-blue-700 focus-visible:outline-none"
-            )}
+            variant="primary"
+            size="md"
           >
             + New Note
-          </button>
+          </Button>
         </div>
       </header>
 
@@ -123,13 +118,15 @@ export default function NoteList() {
         <div className="mt-6 rounded-md border border-blue-100 bg-gradient-to-br from-blue-50 to-gray-50 p-4 text-sm text-gray-700">
           No notes found. Try creating a new one or clearing your search.
           <div className="mt-3">
-            <button
+            <Button
               type="button"
               onClick={() => refresh()}
-              className="rounded-md bg-white px-3 py-1.5 text-sm font-medium text-blue-700 ring-1 ring-inset ring-blue-200 hover:bg-blue-50 focus-visible:outline-none"
+              variant="ghost"
+              size="sm"
+              className="bg-white text-blue-700 ring-1 ring-inset ring-blue-200 hover:bg-blue-50"
             >
               Refresh
-            </button>
+            </Button>
           </div>
         </div>
       )}

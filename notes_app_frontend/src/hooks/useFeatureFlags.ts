@@ -2,6 +2,15 @@
 
 import { useMemo } from "react";
 
+// Ambient declarations must be at top level
+declare global {
+  // eslint-disable-next-line no-var
+  var __NEXT_PUBLIC_FEATURE_FLAGS__: unknown | undefined;
+  // eslint-disable-next-line no-var
+  // Augment window for environments that provide it
+  interface Window {}
+}
+
 /**
  * Internal: Safely parse a string as JSON, returning undefined on failure.
  */
@@ -93,13 +102,6 @@ function coerceToBoolean(value: unknown): boolean {
  */
 export function useFeatureFlags() {
   /** This is a public function. */
-  // Allow an optional global injection for flags in non-build contexts without using 'any'
-  declare global {
-    // eslint-disable-next-line no-var
-    var __NEXT_PUBLIC_FEATURE_FLAGS__: unknown | undefined;
-    // eslint-disable-next-line no-var
-    var window: Window & typeof globalThis;
-  }
 
   const raw =
     typeof window !== "undefined"

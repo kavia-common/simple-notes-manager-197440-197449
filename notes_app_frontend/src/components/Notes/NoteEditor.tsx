@@ -4,6 +4,9 @@ import Link from "next/link";
 import React, { useEffect, useMemo, useState } from "react";
 import { useNoteDetail } from "@/hooks/useNotes";
 import { classNames } from "@/lib/utils";
+import { Input } from "@/components/common/Input";
+import { TextArea } from "@/components/common/TextArea";
+import { Button } from "@/components/common/Button";
 
 /**
  * PUBLIC_INTERFACE
@@ -58,17 +61,17 @@ export default function NoteEditor({ id }: { id: string }) {
           )}
         </div>
         <div className="flex items-center gap-2">
-          <button
+          <Button
             type="button"
             disabled={!note}
             aria-pressed={note?.favorite ? "true" : "false"}
             aria-label={note?.favorite ? "Unfavorite note" : "Favorite note"}
             onClick={() => void toggleFavoriteOptimistic()}
+            variant={note?.favorite ? "secondary" : "ghost"}
+            size="sm"
             className={classNames(
-              "inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm transition focus-visible:outline-none",
-              note?.favorite
-                ? "bg-amber-50 text-amber-600 hover:bg-amber-100"
-                : "bg-white text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+              "items-center gap-1",
+              note?.favorite ? "" : "ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
             )}
           >
             <svg
@@ -87,8 +90,9 @@ export default function NoteEditor({ id }: { id: string }) {
               />
             </svg>
             {note?.favorite ? "Favorited" : "Favorite"}
-          </button>
-          <button
+          </Button>
+
+          <Button
             type="button"
             disabled={!note}
             onClick={async () => {
@@ -98,11 +102,14 @@ export default function NoteEditor({ id }: { id: string }) {
                 window.location.assign("/notes");
               }
             }}
-            className="rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-none disabled:opacity-60"
+            variant="ghost"
+            size="sm"
+            className="ring-1 ring-inset ring-gray-300 hover:bg-gray-50 text-gray-700"
           >
             Delete
-          </button>
-          <button
+          </Button>
+
+          <Button
             type="button"
             disabled={!canSave}
             onClick={() =>
@@ -111,13 +118,11 @@ export default function NoteEditor({ id }: { id: string }) {
                 content,
               })
             }
-            className={classNames(
-              "rounded-md px-3 py-2 text-sm font-medium text-white shadow-sm focus-visible:outline-none disabled:opacity-50",
-              canSave ? "bg-blue-600 hover:bg-blue-700" : "bg-blue-400"
-            )}
+            variant="primary"
+            size="sm"
           >
             Save
-          </button>
+          </Button>
         </div>
       </header>
 
@@ -131,32 +136,21 @@ export default function NoteEditor({ id }: { id: string }) {
         }}
       >
         <div className="mb-4">
-          <label
-            htmlFor="note-title"
-            className="mb-1 block text-sm font-medium text-gray-700"
-          >
-            Title
-          </label>
-          <input
+          <Input
             id="note-title"
             name="title"
-            type="text"
             placeholder="Note title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             disabled={loading || !note}
-            className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 disabled:opacity-60"
+            aria-label="Title"
+            size="md"
+            label="Title"
           />
         </div>
 
         <div className="mb-4">
-          <label
-            htmlFor="note-content"
-            className="mb-1 block text-sm font-medium text-gray-700"
-          >
-            Content
-          </label>
-          <textarea
+          <TextArea
             id="note-content"
             name="content"
             rows={10}
@@ -164,33 +158,35 @@ export default function NoteEditor({ id }: { id: string }) {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             disabled={loading || !note}
-            className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 disabled:opacity-60"
+            aria-label="Content"
+            size="md"
+            label="Content"
           />
         </div>
 
         <div className="flex items-center gap-3">
-          <button
+          <Button
             type="submit"
             disabled={!canSave}
-            className={classNames(
-              "rounded-md px-3 py-2 text-sm font-medium text-white shadow-sm focus-visible:outline-none disabled:opacity-50",
-              canSave ? "bg-blue-600 hover:bg-blue-700" : "bg-blue-400"
-            )}
+            variant="primary"
+            size="md"
           >
             Save changes
-          </button>
+          </Button>
 
-          <button
+          <Button
             type="button"
             onClick={() => {
               setTitle(note?.title ?? "");
               setContent(note?.content ?? "");
             }}
             disabled={!note}
-            className="rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-none disabled:opacity-60"
+            variant="ghost"
+            size="md"
+            className="ring-1 ring-inset ring-gray-300 text-gray-700 hover:bg-gray-50"
           >
             Reset
-          </button>
+          </Button>
         </div>
       </form>
     </main>

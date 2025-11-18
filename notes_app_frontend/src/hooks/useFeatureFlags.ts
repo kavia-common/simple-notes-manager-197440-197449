@@ -6,9 +6,10 @@ import { useMemo } from "react";
 declare global {
   // eslint-disable-next-line no-var
   var __NEXT_PUBLIC_FEATURE_FLAGS__: unknown | undefined;
-  // eslint-disable-next-line no-var
-  // Augment window for environments that provide it
-  interface Window {}
+  // Provide an optional augmentation for Window without creating an empty interface error
+  interface Window {
+    __NEXT_PUBLIC_FEATURE_FLAGS__?: unknown;
+  }
 }
 
 /**
@@ -87,21 +88,9 @@ function coerceToBoolean(value: unknown): boolean {
   return Boolean(value);
 }
 
-/**
- * PUBLIC_INTERFACE
- * useFeatureFlags
- * A React hook to read feature flags from NEXT_PUBLIC_FEATURE_FLAGS.
- *
- * Supports:
- * - JSON: {"favorites": true, "beta": "1"} or ["favorites","beta"]
- * - CSV: "favorites,beta"
- *
- * Returns a memoized object with:
- * - flags: Record<string, boolean>
- * - isEnabled: (flagName: string) => boolean
- */
+// PUBLIC_INTERFACE
 export function useFeatureFlags() {
-  /** This is a public function. */
+  /** This is a public function. Returns feature flags and a helper to check them. */
 
   const raw =
     typeof window !== "undefined"
@@ -112,6 +101,9 @@ export function useFeatureFlags() {
             ? ((globalThis as {
                 __NEXT_PUBLIC_FEATURE_FLAGS__?: unknown;
               }).__NEXT_PUBLIC_FEATURE_FLAGS__ as string)
+            : typeof window !== "undefined" &&
+              typeof window.__NEXT_PUBLIC_FEATURE_FLAGS__ === "string"
+            ? (window.__NEXT_PUBLIC_FEATURE_FLAGS__ as string)
             : undefined))
       : process.env.NEXT_PUBLIC_FEATURE_FLAGS;
 

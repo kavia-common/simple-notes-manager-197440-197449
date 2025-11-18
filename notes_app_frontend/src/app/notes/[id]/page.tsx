@@ -1,4 +1,6 @@
 import Link from "next/link";
+// Import the generated PageProps type for this route to match Next's expectations
+import type { PageProps } from "../../../../.next/types/app/notes/[id]/page";
 
 /**
  * PUBLIC_INTERFACE
@@ -15,8 +17,10 @@ export function generateStaticParams() {
  * Placeholder page showing details for a specific note id.
  * Displays the note id from the route and provides basic layout for future editing.
  */
-export default function NoteDetailsPage({ params }: { params: { id: string } }) {
-  const id = params?.id;
+export default async function NoteDetailsPage(props: PageProps) {
+  const params = props.params;
+  const resolvedParams = params instanceof Promise ? await params : params;
+  const id = (resolvedParams as { id: string } | undefined)?.id;
 
   return (
     <main className="min-h-[70vh] p-6">

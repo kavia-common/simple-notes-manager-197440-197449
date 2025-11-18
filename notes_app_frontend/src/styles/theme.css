@@ -1,0 +1,57 @@
+:root {
+  /* Ocean Professional palette */
+  --color-primary: #2563EB;   /* Blue 600 */
+  --color-secondary: #F59E0B; /* Amber 500 */
+  --color-success: #F59E0B;   /* Amber (per style guide) */
+  --color-error: #EF4444;     /* Red 500 */
+  --color-text: #111827;      /* Gray 900 */
+  --color-bg: #f9fafb;        /* Gray 50 */
+  --color-surface: #ffffff;   /* White */
+
+  /* Gradient tokens */
+  --gradient-primary-from: 255, 255, 255; /* using rgb() with alpha in utilities */
+  --gradient-primary-to: 37, 99, 235;     /* primary */
+  --gradient-subtle-from: 59, 130, 246;   /* blue-500 */
+  --gradient-subtle-to: 249, 250, 251;    /* gray-50 */
+
+  /* Radii */
+  --radius-sm: 0.375rem;  /* rounded-md */
+  --radius-md: 0.5rem;    /* rounded-lg */
+  --radius-lg: 0.75rem;   /* rounded-xl */
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  /* Focus ring */
+  --focus-ring: 0 0 0 3px rgb(37 99 235 / 0.35);
+}
+
+/* Utility helpers leveraging variables for non-Tailwind contexts */
+.theme-surface {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.theme-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.theme-focusable:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.theme-gradient-subtle {
+  background-image: linear-gradient(
+    to bottom right,
+    rgba(var(--gradient-subtle-from), 0.08),
+    rgba(var(--gradient-subtle-to), 1)
+  );
+}
